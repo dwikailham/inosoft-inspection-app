@@ -1,65 +1,93 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { TabNavigation } from '@/components/molecules/TabNavigation';
+import { InspectionTable } from '@/components/organisms/InspectionTable';
+import { Input } from '@/components/atoms/Input';
+import { Button } from '@/components/atoms/Button';
+import { Search, Plus } from 'lucide-react';
+import { PageHeader } from '@/components/molecules/PageHeader';
+
+export default function ListInspectionPage() {
+  const router = useRouter();
+  const [inspections, setInspections] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState('Open');
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const fetchInspections = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get('/api/inspections');
+        setInspections(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchInspections();
+  }, []);
+
+  const tabs = ['Open', 'For Review', 'Completed'];
+
+  const filteredInspections = inspections.filter((item) => {
+    if (!item.status) return false;
+
+    // Support search string
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const matches = (item.no?.toLowerCase().includes(q)) ||
+        (item.location?.toLowerCase().includes(q)) ||
+        (item.insp_type?.toLowerCase().includes(q));
+      if (!matches) return false;
+    }
+
+    const s = item.status.toLowerCase();
+    if (activeTab === 'Open') {
+      return ['open', 'new', 'in progress', 'draft'].includes(s);
+    }
+    return s === activeTab.toLowerCase();
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="space-y-6">
+      <PageHeader
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Inspections' }]}
+        title="Inspections"
+        subtitle="Manage and track your inspections here."
+      />
+
+      <TabNavigation tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0 pt-2">
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+          <Input
+            className="pl-9"
+            placeholder="Search inspections..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <div className="flex space-x-3 w-full sm:w-auto justify-end">
+          <Button variant="outline">Export</Button>
+          {activeTab === 'Open' && (
+            <Button onClick={() => router.push('/create')} className="bg-emerald-500 hover:bg-emerald-600 text-white">
+              <Plus className="w-4 h-4 mr-2" /> Create Request
+            </Button>
+          )}
         </div>
-      </main>
+      </div>
+
+      {loading ? (
+        <div className="py-10 text-center text-neutral-500">Loading inspections...</div>
+      ) : (
+        <InspectionTable inspections={filteredInspections} />
+      )}
     </div>
   );
 }
