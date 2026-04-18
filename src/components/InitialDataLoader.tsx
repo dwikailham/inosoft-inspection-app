@@ -14,8 +14,14 @@ export function InitialDataLoader() {
       try {
         const res = await axios.get('/api/dropdowns');
         dispatch(setDropdownsSuccess(res.data));
-      } catch (err: any) {
-        dispatch(setDropdownsFailure(err.message));
+      } catch (err: unknown) {
+        let errorMessage = 'Failed to load dropdowns';
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (axios.isAxiosError(err)) {
+          errorMessage = err.message;
+        }
+        dispatch(setDropdownsFailure(errorMessage));
       }
     };
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { InspectionData } from '@/types';
 import { useRouter } from 'next/navigation';
 import { TabNavigation } from '@/components/molecules/TabNavigation';
 import { InspectionTable } from '@/components/organisms/InspectionTable';
@@ -12,7 +13,7 @@ import { PageHeader } from '@/components/molecules/PageHeader';
 
 export default function ListInspectionPage() {
   const router = useRouter();
-  const [inspections, setInspections] = useState<any[]>([]);
+  const [inspections, setInspections] = useState<InspectionData[]>([]);
   const [activeTab, setActiveTab] = useState('Open');
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');

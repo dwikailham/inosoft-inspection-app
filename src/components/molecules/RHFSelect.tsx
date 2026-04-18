@@ -12,10 +12,10 @@ export function RHFSelect({ name, label, rules, ...props }: RHFSelectProps) {
   const { register, formState: { errors } } = useFormContext();
   const errorParts = name.split('.');
   
-  let errorMsg = errors;
+  let errorMsg: Record<string, unknown> | undefined = errors as unknown as Record<string, unknown>;
   for (const part of errorParts) {
-    if (errorMsg) {
-      errorMsg = errorMsg[part] as any;
+    if (errorMsg && typeof errorMsg === 'object') {
+      errorMsg = errorMsg[part] as Record<string, unknown> | undefined;
     }
   }
 

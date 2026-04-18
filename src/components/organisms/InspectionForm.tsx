@@ -13,37 +13,7 @@ import { RHFTextarea } from '../molecules/RHFTextarea';
 import { Button } from '../atoms/Button';
 import { OrderItemField } from '../molecules/OrderItemField';
 
-// Type definitions for the form
-interface LotForm {
-  stock_id: string; // The selected cascading start ID, or empty
-  lot_no: string;
-  allocation: string;
-  owner: string;
-  condition: string;
-  avail_qty: number;
-  qty_required: number;
-  inspection_required: boolean;
-}
-
-interface ItemForm {
-  itemCode: string;
-  qty: number;
-  lots: LotForm[];
-}
-
-interface FormValues {
-  service_type: string;
-  scope_of_work: string;
-  location: string;
-  customer_id: string;
-  date: string;
-  related_to: string;
-  dc_code: string;
-  notes: string;
-  charge_to_customer?: boolean;
-  status?: string;
-  items: ItemForm[];
-}
+import { FormValues } from '@/types';
 
 export function InspectionForm() {
   const router = useRouter();

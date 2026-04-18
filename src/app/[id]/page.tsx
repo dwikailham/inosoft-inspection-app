@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { InspectionData } from '@/types';
 import { useParams } from 'next/navigation';
 import { InspectionDetail } from '@/components/organisms/InspectionDetail';
 import { PageHeader } from '@/components/molecules/PageHeader';
 
 export default function DetailInspectionPage() {
   const { id } = useParams() as { id: string };
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<InspectionData | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

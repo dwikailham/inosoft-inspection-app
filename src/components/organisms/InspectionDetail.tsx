@@ -4,8 +4,10 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Badge } from '../atoms/Badge';
 
+import { InspectionData, InspectionSow, InspectionWork, InspectionField, InspectionItem, LotItem } from '@/types';
+
 interface InspectionDetailProps {
-  data: any; // Ideally we type this with the exact fe-datatest schema
+  data: InspectionData | null;
 }
 
 export function InspectionDetail({ data }: InspectionDetailProps) {
@@ -75,13 +77,13 @@ export function InspectionDetail({ data }: InspectionDetailProps) {
               </tr>
             </thead>
             <tbody>
-              {data.sow?.map((scope: any, idx: number) => (
-                scope.works.map((work: any) => (
+              {data.sow?.map((scope: InspectionSow, idx: number) => (
+                scope.works.map((work: InspectionWork) => (
                   <tr key={work._id} className="border-t bg-white">
                     <td className="px-4 py-3 font-semibold">{work.subscope_name}</td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1 flex-wrap">
-                        {work.fields?.filter((f: any) => f.selected).map((field: any) => (
+                        {work.fields?.filter((f: InspectionField) => f.selected).map((field: InspectionField) => (
                           <span key={field._id} className="bg-neutral-100 text-neutral-500 text-xs px-2 py-1 rounded border shadow-sm">{field.name}</span>
                         ))}
                       </div>
@@ -115,7 +117,7 @@ export function InspectionDetail({ data }: InspectionDetailProps) {
               </tr>
             </thead>
             <tbody>
-              {(data.items || data.items_raw)?.map((item: any, idx: number) => (
+              {(data.items || data.items_raw)?.map((item: InspectionItem, idx: number) => (
                 <React.Fragment key={item.id_item || idx}>
                   <tr className="border-t bg-white">
                     <td className="px-4 py-3 text-xs" rowSpan={Math.max(1, item.lots?.length || 1)}>{item.item_code || '-'}</td>
@@ -130,7 +132,7 @@ export function InspectionDetail({ data }: InspectionDetailProps) {
                     <td className="px-4 py-3 text-center bg-neutral-50">{item.lots?.[0]?.qty_required || '-'}</td>
                   </tr>
                   {/* Additional Lots for this item */}
-                  {item.lots?.slice(1).map((lot: any, lotIdx: number) => (
+                  {item.lots?.slice(1).map((lot: LotItem, lotIdx: number) => (
                     <tr key={lotIdx} className="border-t bg-white bg-opacity-50">
                       <td className="px-4 py-3 text-xs font-semibold">{lot.lot_no}</td>
                       <td className="px-4 py-3 font-semibold text-neutral-900">{lot.allocation}</td>
