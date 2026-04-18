@@ -67,6 +67,11 @@ export interface InspectionItem {
   batch?: string;
   condition?: string;
   qty?: number;
+  lot_no?: string;
+  allocation?: string;
+  owner?: string;
+  owned_name?: string;
+  qty_required?: number;
   lots?: LotItem[];
 }
 
@@ -80,6 +85,7 @@ export interface InspectionData {
   appvwho?: string;
   insp_type?: string;
   service_type?: string;
+  scope_of_work?: string;
   location?: string;
   customer?: CustomerData;
   customer_id?: string;

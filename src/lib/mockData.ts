@@ -38,7 +38,16 @@ export const mockInspectionData = {
       "item_desc": "Casing 13 3/8\", 68 PPF, L80, JFELION, R3, Coated",
       "batch": "PO-2024-00457-A-RR",
       "condition": "good",
-      "qty": 2
+      "qty": 2,
+      "lots": [
+        {
+          "lot_no": "MMT30624701",
+          "allocation": "PT Santosa",
+          "owner": "MITO",
+          "condition": "Good",
+          "qty_required": 1900
+        }
+      ]
     }
   ],
   "sow": [
@@ -70,4 +79,9 @@ export const inspectionsList = [
   mockInspectionData,
   { ...mockInspectionData, _id: '3f4e240b-789a-4c28-9d21-f3b14eddb17a', no: 'REQ-2024-0002', status: 'Open' },
   { ...mockInspectionData, _id: '6c8f9b45-123e-4b67-a25e-8b1e4c7d9a1c', no: 'REQ-2024-0003', status: 'For Review' },
+];
+
+export const itemCodes = [
+  { id: '550e8400-e29b-41d4-a716-446655440000', code: 'ITM001278', desc: 'Casing 13 3/8", 68 PPF, L80...', batch: 'PO-2024-00457-A-RR' },
+  { id: '123e4567-e89b-12d3-a456-426614174000', code: 'ITM001279', desc: 'Tubing 5", L80', batch: 'PO-2024-TUBING' }
 ];

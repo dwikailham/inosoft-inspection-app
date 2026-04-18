@@ -19,7 +19,6 @@ export function InspectionForm() {
   const router = useRouter();
   const dropdowns = useSelector((state: RootState) => state.dropdowns.data);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState('New');
 
   const methods = useForm<FormValues>({
     defaultValues: {
@@ -58,7 +57,7 @@ export function InspectionForm() {
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
     try {
-      const payload = { ...data, status: submitStatus };
+      const payload = { ...data, status: data.status || 'New' };
       await axios.post('/api/inspections', payload);
       router.push("/"); // Redirect to the main page
     } catch (error) {
@@ -159,8 +158,8 @@ export function InspectionForm() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row justify-end sm:space-x-3 space-y-3 sm:space-y-0 pt-6 border-t">
           <Button type="button" variant="ghost" className="w-full sm:w-auto" onClick={() => router.push('/')}>Cancel</Button>
-          <Button type="button" variant="outline" className="w-full sm:w-auto" disabled={isSubmitting} onClick={() => { setSubmitStatus('Draft'); handleSubmit(onSubmit)(); }}>Save as Draft</Button>
-          <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting} onClick={() => setSubmitStatus('New')}>{isSubmitting ? 'Submitting...' : 'Submit'}</Button>
+          <Button type="button" variant="outline" className="w-full sm:w-auto" disabled={isSubmitting} onClick={() => { setValue('status', 'Draft'); handleSubmit(onSubmit)(); }}>Save as Draft</Button>
+          <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting} onClick={() => setValue('status', 'New')}>{isSubmitting ? 'Submitting...' : 'Submit'}</Button>
         </div>
       </form>
     </FormProvider>
