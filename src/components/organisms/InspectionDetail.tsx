@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { Badge } from '../atoms/Badge';
+import { formatDate } from '@/utils/date';
 
 import { InspectionData, InspectionSow, InspectionWork, InspectionField, InspectionItem, LotItem } from '@/types';
 
@@ -54,11 +55,11 @@ export function InspectionDetail({ data }: InspectionDetailProps) {
         <div className="p-4 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-6 text-sm">
           <div>
             <p className="text-neutral-500 mb-1">Date Submitted</p>
-            <p className="font-bold text-neutral-900">{data.createdate ? new Date(data.createdate * 1000).toLocaleDateString() : new Date().toLocaleDateString()}</p>
+            <p className="font-bold text-neutral-900">{formatDate(data.createdate || new Date())}</p>
           </div>
           <div>
             <p className="text-neutral-500 mb-1">Estimated Completion Date</p>
-            <p className="font-bold text-neutral-900">{data.date || '-'}</p>
+            <p className="font-bold text-neutral-900">{formatDate(data.date)}</p>
           </div>
           <div>
             <p className="text-neutral-500 mb-1">Related To</p>

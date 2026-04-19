@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { Badge } from '../atoms/Badge';
 import { InspectionData } from '@/types';
+import { formatDate } from '@/utils/date';
 
 interface InspectionTableProps {
   inspections: InspectionData[];
@@ -68,8 +69,8 @@ export function InspectionTable({ inspections }: InspectionTableProps) {
                     <td className="px-4 py-4 font-medium text-neutral-900">{item.no || '-'}</td>
                     <td className="px-4 py-4">{item.location || '-'}</td>
                     <td className="px-4 py-4">{item.insp_type || item.service_type || '-'}</td>
-                    <td className="px-4 py-4">{item.createdate ? new Date(item.createdate * 1000).toLocaleDateString() : '-'}</td>
-                    <td className="px-4 py-4">{item.date || '-'}</td>
+                    <td className="px-4 py-4">{formatDate(item.createdate)}</td>
+                    <td className="px-4 py-4">{formatDate(item.date)}</td>
                     <td className="px-4 py-4 text-emerald-600 font-medium">{item.related_to || '-'}</td>
                     <td className="px-4 py-4">{item.appvwho || '-'}</td>
                     <td className="px-4 py-4">
