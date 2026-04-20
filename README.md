@@ -61,7 +61,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Project Structure
 
 - `src/app/`: Next.js App Router core, containing your distinct page routes (`/`, `/[id]`, `/create`).
-- `src/components/`: Reusable React components organized systematically (e.g. `atoms`, `molecules`, `organisms`).
+- `src/components/`: Reusable React components organized systematically using **Atomic Design Methodology** (e.g. `atoms`, `molecules`, `organisms`). This approach guarantees scalable, reusable, and highly maintainable UI elements.
 - `src/types/`: Centralized TypeScript interfaces outlining complex API payload contracts (e.g. `InspectionData`, `InspectionWork`).
 - `src/utils/`: Custom unified utility functions (such as the standard `formatDate` helper logic).
 - `src/store/`: Global Redux Toolkit architecture covering standard client dropdowns and configuration store.
